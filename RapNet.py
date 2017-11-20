@@ -52,4 +52,6 @@ class RapNet(nn.Module):
         # Decode hidden state of last time step
         out = self.fc(out[:, -1, :])
         # Class probabilities at last layer 
-        return F.softmax(out[len(out)-1])
+       # return F.softmax(out[len(out)-1])
+        print(out[len(out)-1])
+        return out[len(out)-1]
