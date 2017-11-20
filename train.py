@@ -87,24 +87,22 @@ def train(EDIM, HDIM, epochs):
     iteration = 0
 
     PATH = "train"
-    dataset = LyricDataset(PATH, 2)
+    numClasses = len([path for path in os.listdir(PATH) if path != ".DS_Store"])
+    dataset = LyricDataset(PATH, numClasses)
     word_to_ix = initVocab(dataset)
-
-    model = RapNet(EDIM, HDIM, 2, len(word_to_ix), 2)#.cuda()
-    loss = nn.MSELoss()#.cuda()
     optimizer = optim.Adadelta(model.parameters())
+
     if cuda:
-        model = RapNet(EDIM, HDIM, 2, len(word_to_ix), 2).cuda()
+        model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses).cuda()
         loss = nn.MSELoss().cuda()
     else:
-        model = RapNet(EDIM, HDIM, 2, len(word_to_ix), 2)#.cuda()
-        loss = nn.MSELoss()#.cuda()
-    optimizer = optim.Adadelta(model.parameters())
+        model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses)
+        loss = nn.MSELoss()
     for epoch in range(epochs):
         for i, data in enumerate(dataset):
             song, label = data
             song = prepare_sequence(song, word_to_ix)
-            label = Variable(torch.FloatTensor([label]))#.cuda()
+            label = Variable(torch.FloatTensor([label]))
             if cuda:
                 song, label = song.cuda(), label.cuda()
             model.hidden = model.initHidden(song)
