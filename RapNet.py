@@ -51,5 +51,5 @@ class RapNet(nn.Module):
 
         # Decode hidden state of last time step
         out = self.fc(out[:, -1, :])
-        # print(out[len(out)-1,0])
+        print(out[len(out)-1,0])
         return out[len(out)-1,0]

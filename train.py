@@ -90,7 +90,6 @@ def train(EDIM, HDIM, epochs):
     numClasses = len([path for path in os.listdir(PATH) if path != ".DS_Store"])
     dataset = LyricDataset(PATH, numClasses)
     word_to_ix = initVocab(dataset)
-    optimizer = optim.Adadelta(model.parameters())
 
     if cuda:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses).cuda()
@@ -98,6 +97,7 @@ def train(EDIM, HDIM, epochs):
     else:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses)
         loss = nn.MSELoss()
+    optimizer = optim.Adam(model.parameters())
     for epoch in range(epochs):
         for i, data in enumerate(dataset):
             song, label = data
