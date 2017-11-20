@@ -96,11 +96,10 @@ def train(EDIM, HDIM, epochs):
     if cuda:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), 2).cuda()
         loss = nn.MSELoss().cuda()
-        optimizer = optim.Adadelta(model.parameters()).cuda()
     else:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), 2)#.cuda()
         loss = nn.MSELoss()#.cuda()
-        optimizer = optim.Adadelta(model.parameters())
+    optimizer = optim.Adadelta(model.parameters())
     for epoch in range(epochs):
         for i, data in enumerate(dataset):
             song, label = data

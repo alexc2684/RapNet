@@ -24,7 +24,7 @@ import re
 class RapNet(nn.Module):
     def __init__(self, embedding_dim, hidden_dim, num_layers, vocab_size, num_classes):
         super(RapNet, self).__init__()
-        self.cuda = torch.cuda.is_available()
+        self.isCuda = torch.cuda.is_available()
         self.hidden_size = hidden_dim
         self.num_layers = num_layers
         self.embeddings = nn.Embedding(vocab_size, embedding_dim)
@@ -34,7 +34,7 @@ class RapNet(nn.Module):
 
     def initHidden(self, x):
         hidden = Variable(torch.zeros(self.num_layers*2, x.size(0), self.hidden_size))#.cuda() # 2 for bidirection
-        if self.cuda:
+        if self.isCuda:
             hidden = hidden.cuda()
         return hidden
 
@@ -43,7 +43,7 @@ class RapNet(nn.Module):
         x = self.embeddings(x).view(len(x), 1, -1)
         h0 = Variable(torch.zeros(self.num_layers*2, x.size(0), self.hidden_size))#.cuda() # 2 for bidirection
         c0 = Variable(torch.zeros(self.num_layers*2, x.size(0), self.hidden_size))#.cuda()
-        if self.cuda:
+        if self.isCuda:
             h0 = h0.cuda()
             c0 = c0.cuda()
         # Forward propagate RNN
