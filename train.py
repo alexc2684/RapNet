@@ -93,16 +93,16 @@ def train(EDIM, HDIM, epochs):
 
     if cuda:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses).cuda()
-        loss = nn.MSELoss().cuda()
+        loss = nn.NLLLoss().cuda()
     else:
         model = RapNet(EDIM, HDIM, 2, len(word_to_ix), numClasses)
-        loss = nn.MSELoss()
+        loss = nn.NLLLoss()
     optimizer = optim.Adam(model.parameters())
     for epoch in range(epochs):
         for i, data in enumerate(dataset):
             song, label = data
             song = prepare_sequence(song, word_to_ix)
-            label = Variable(torch.FloatTensor([label]))
+            label = Variable(torch.LongTensor([0 if i != label else 1 for i in range(numClasses)]))
             if cuda:
                 song, label = song.cuda(), label.cuda()
             model.hidden = model.initHidden(song)
