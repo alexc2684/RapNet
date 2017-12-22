@@ -1,4 +1,4 @@
-# RapNet: Machine learning classification for hip-hop artists
+# RapNet: Machine Learning Classification for Hip-Hop Artists
 
 Using machine learning to classify rap artists based on song lyrics.
 
